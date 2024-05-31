@@ -2,31 +2,47 @@
 import os
 import json
 from openai import OpenAI
-from data import *
+from data import training_data, validation_data
 
 # Step 2: Initialize the OpenAI client with the API key from environment variables
 client = OpenAI(
-  api_key=os.environ['OPENAI_API_KEY'],
+    api_key=os.environ['OPENAI_API_KEY'],
 )
 
 # Step 3: Define the names of the training and validation data files
 training_file_name = "training_data.jsonl"
 validation_file_name = "validation_data.jsonl"
 
+
 # Step 4: Function to prepare data and write it to a JSONL file
+def prepare_data(dictonary_data: list[dict], final_file_name):
+    with open(final_file_name, 'w') as outfile:
+        for entry in dictonary_data:
+            json.dump(entry, outfile)
+            outfile.write('\n')
 
 
 # Step 5: Call the prepare_data function for both training and validation data
-
+prepare_data(training_data, training_file_name)
+prepare_data(validation_data, validation_file_name)
 
 # Step 6: Upload the training data file to OpenAI and get the file ID
-
+training_file_id = client.files.create(
+    file=open(training_file_name, "rb"),
+    purpose="fine-tune",
+)
 
 # Step 7: Upload the validation data file to OpenAI and get the file ID
-
+validation_file_id = client.files.create(
+    file=open(validation_file_name, "rb"),
+    purpose="fine-tune",
+)
 
 # Step 8: Print the file IDs for reference
+print(f"Training file ID: {training_file_id}")
+print(f"Validation file ID: {validation_file_id}")
 
+import pdb; pdb.set_trace()
 
 # Step 9: Create a fine-tuning job with the uploaded files and specific hyperparameters
 
@@ -63,4 +79,3 @@ import time
 
 
 # Step 20: Retrieve and print the ID of the fine-tuned model
-
