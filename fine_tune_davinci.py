@@ -1,6 +1,9 @@
 # Step 1: Import necessary modules
 import os
 import json
+import pdb
+import signal
+import datetime
 from openai import OpenAI
 from data import training_data, validation_data
 
@@ -42,10 +45,13 @@ validation_file_id = client.files.create(
 print(f"Training file ID: {training_file_id}")
 print(f"Validation file ID: {validation_file_id}")
 
-import pdb; pdb.set_trace()
+
+pdb.set_trace()
 
 # Step 9: Create a fine-tuning job with the uploaded files and specific hyperparameters
+response = client.fine_tuning.jobs.create(
 
+)
 
 # Step 10: Retrieve the job ID and status from the response
 
@@ -54,8 +60,7 @@ import pdb; pdb.set_trace()
 
 
 # Step 12: Import signal and datetime modules for handling interruptions and timestamps
-import signal
-import datetime
+
 
 # Step 13: Define a signal handler to manage interruptions
 
