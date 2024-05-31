@@ -46,17 +46,30 @@ print(f"Training file ID: {training_file_id}")
 print(f"Validation file ID: {validation_file_id}")
 
 
-pdb.set_trace()
+# pdb.set_trace()
+
 
 # Step 9: Create a fine-tuning job with the uploaded files and specific hyperparameters
 response = client.fine_tuning.jobs.create(
+    training_file=training_file_id.id,
+    validation_file=validation_file_id.id,
+    model="davinci-002",
+    hyperparameters={
+        "n_epochs": 5,
+        "batch_size": 3,
+        "learning_rate_multiplier": 0.3
+    }
 
 )
 
 # Step 10: Retrieve the job ID and status from the response
-
+job_id = response.id
+status = response.status
 
 # Step 11: Print the job ID and initial status
+print(f"fined-tuning job created: {job_id}")
+print(f"training response: {response}")
+print(f"Status: {status}")
 
 
 # Step 12: Import signal and datetime modules for handling interruptions and timestamps
